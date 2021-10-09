@@ -39,7 +39,7 @@ class OutputTextWidget(QTextBrowser):
         super(OutputTextWidget, self).__init__(parent)
         self.setOpenExternalLinks(False)
 
-        self.trace_reg = re.compile(r'(File &quot;(.+?)&quot;, line (\d{1,5}), in (.+?))')
+        self.trace_reg = re.compile(r'((\s*)File &quot;(.+?)&quot;, line (\d{1,5}), in (.+?))')
 
         self.anchorClicked.connect(self.anchor_clicked)
 
@@ -196,7 +196,7 @@ class OutputTextWidget(QTextBrowser):
         Returns:
             None
         """
-        url = urllib.unquote(link.toString()).replace('<br/>', '\n')
+        url = urllib.unquote(str(link.toString())).replace('<br/>', '\n')
         url = str(url)
         if url.startswith('#wrap:'):
             left_text = url[len('#wrap:'):]
@@ -242,7 +242,11 @@ class OutputTextWidget(QTextBrowser):
             Returns:
                 str
             """
-            line, filename, line_no, _ = match_obj.groups()
+            groups = match_obj.groups()
+            if len(groups) == 4:
+                line, filename, line_no, _ = groups
+            else:
+                line, _, filename, line_no, _ = groups
             link = urllib.quote('%s.%d' % (filename.replace('\\', '/'), int(line_no)))
             return line.replace(filename,
                                 '<a href=\"#%s\" style="color:%s;white-space:pre;">%s</a>' % (link, color, filename))
