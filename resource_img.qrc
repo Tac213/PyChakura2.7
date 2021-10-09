@@ -1,0 +1,11 @@
+<RCC>
+  <qresource>
+    <file>res/svg/clear.svg</file>
+    <file>res/svg/dropdown.svg</file>
+    <file>res/svg/dropup.svg</file>
+    <file>res/svg/menu.svg</file>
+    <file>res/svg/search.svg</file>
+    <file>res/svg/titlebar_closewindow.svg</file>
+    <file>res/icon.jpg</file>
+  </qresource>
+</RCC>
