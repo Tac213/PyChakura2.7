@@ -21,9 +21,11 @@ def check_dependency():
         try:
             __import__(lib_name)
         except ImportError:
-            if os.system('py -2 -m pip install %s' % lib_name):
-                from py_chakura import logger
-                logger.error('py -2 -m pip install %s FAILED!!!', lib_name)
-                logger.log_last_except()
-                exit(1)
+            from py_chakura import logger
+            if os.system('py -2.7 -m pip install %s' % lib_name):
+                logger.info('py -2.7 -m pip install %s FAILED, try python', lib_name)
+                if os.system('python -m pip install %s' % lib_name):
+                    logger.error('python -m pip install %s FAILED!!!', lib_name)
+                    logger.log_last_except()
+                    exit(1)
             __import__(lib_name)
