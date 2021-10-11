@@ -8,7 +8,6 @@ from PyQt4.QtGui import QIcon, QFrame, QHBoxLayout, QToolButton
 from PyQt4.QtCore import pyqtSignal, Qt
 
 from .search_line_edit import SearchLineEdit
-import const
 
 
 class FindWidget(QFrame):
@@ -35,7 +34,7 @@ class FindWidget(QFrame):
         layout.addWidget(self.line_edit)
 
         self.close_button = QToolButton(self)
-        self.close_button.setIcon(QIcon(os.path.join(const.ROOT_DIR, 'res/svg/titlebar_closewindow.svg')))
+        self.close_button.setIcon(QIcon(':/res/svg/titlebar_closewindow.svg'))
         self.close_button.setFixedSize(7, 7)
         self.close_button.setAutoRaise(True)
         self.close_button.clicked.connect(self._on_close)

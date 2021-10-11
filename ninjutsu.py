@@ -7,9 +7,9 @@ import os
 import importlib
 import threading
 
+import pyc_const
 import py_chakura
 from log_manager import MockStdOut
-from gui import main_window
 
 
 def exec_python_script(script_name, script_args, thread_name):
@@ -22,6 +22,7 @@ def exec_python_script(script_name, script_args, thread_name):
     Returns:
         threading.Thread
     """
+    from gui import main_window
     if not script_name:
         return
     cwd = os.getcwd()
@@ -47,6 +48,9 @@ def exec_python_script(script_name, script_args, thread_name):
     output_window = main_window.main_window.create_python_output_window()
     sys.stdout = MockStdOut('stdout', sys.__stdout__, output_window)
     sys.stderr = MockStdOut('stderr', sys.__stderr__, output_window)
+    if pyc_const.ROOT_DIR in sys.path:
+        sys.path.remove(pyc_const.ROOT_DIR)
+        sys.path.append(pyc_const.ROOT_DIR)
     thread = None
     if hasattr(module, 'main'):
         if not callable(module.main):

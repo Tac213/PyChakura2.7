@@ -6,7 +6,7 @@ import sys
 import os
 import argparse
 
-import const
+import pyc_const
 import dependency
 import log_manager
 import ninjutsu
@@ -23,12 +23,12 @@ def _init_logger():
         None
     """
     global logger
-    log_dir_path = os.path.join(const.ROOT_DIR, const.LOG_DIR_NAME)
+    log_dir_path = os.path.join(pyc_const.ROOT_DIR, pyc_const.LOG_DIR_NAME)
     # 创建log目录
     if not os.path.exists(log_dir_path):
         os.mkdir(log_dir_path)
-    log_manager.LogManager.tag = const.LOGGER_NAME
-    logger = log_manager.LogManager.get_logger(const.LOGGER_NAME, save_file=True, dirname=log_dir_path)
+    log_manager.LogManager.tag = pyc_const.LOGGER_NAME
+    logger = log_manager.LogManager.get_logger(pyc_const.LOGGER_NAME, save_file=True, dirname=log_dir_path)
     log_manager.LogManager.set_handler(log_manager.STREAM)
 
 
@@ -63,16 +63,16 @@ def main(args):
     app = QApplication(sys.argv)
 
     # 设置应用基础信息
-    app_name = args.window_name if args.window_name else const.APP_NAME
+    app_name = args.window_name if args.window_name else pyc_const.APP_NAME
     app.setApplicationName(app_name)
-    app.setFont(QFont(const.APP_FONT_NAME, const.APP_FONT_SIZE))
-    app.setWindowIcon(QIcon(os.path.join(const.ROOT_DIR, const.APP_ICON)))
+    app.setFont(QFont(pyc_const.APP_FONT_NAME, pyc_const.APP_FONT_SIZE))
+    app.setWindowIcon(QIcon(os.path.join(pyc_const.ROOT_DIR, pyc_const.APP_ICON)))
 
     # 显示主窗口, 如果不用一个变量勾住这个窗口的实例，这个窗口将无法被显示出来，即使在类里面写self.show()也没用
     main_window = MainWindow()
     main_window.on_window_ready()
     main_window.setWindowTitle(app.applicationName())
-    main_window.setWindowIcon(QIcon(os.path.join(const.ROOT_DIR, const.APP_ICON)))
+    main_window.setWindowIcon(QIcon(os.path.join(pyc_const.ROOT_DIR, pyc_const.APP_ICON)))
     main_window.show()
     global ninjutsu_thread
     ninjutsu_thread = ninjutsu.exec_python_script(args.main, args.args, app_name)

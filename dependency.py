@@ -3,9 +3,11 @@
 # contact: gzzhanghuaxiong@corp.netease.com
 
 import os
+import platform
 
 # 依赖库
 _DEPENDENCY = [
+    'wheel',
     'PyQt4',
 ]
 
@@ -22,10 +24,27 @@ def check_dependency():
             __import__(lib_name)
         except ImportError:
             from py_chakura import logger
-            if os.system('py -2.7 -m pip install %s' % lib_name):
-                logger.info('py -2.7 -m pip install %s FAILED, try python', lib_name)
-                if os.system('python -m pip install %s' % lib_name):
-                    logger.error('python -m pip install %s FAILED!!!', lib_name)
-                    logger.log_last_except()
-                    exit(1)
+            install_name = get_install_name(lib_name)
+            if os.system('py -2.7 -m pip install %s' % install_name):
+                logger.info('py -2.7 -m pip install %s FAILED, try python', install_name)
+                if os.system('python -m pip install %s' % install_name):
+                    logger.error('python -m pip install %s FAILED, try pip', install_name)
+                    if os.system('pip install %s' % install_name):
+                        logger.log_last_except()
+                        exit(1)
             __import__(lib_name)
+
+
+def get_install_name(lib_name):
+    """
+    获取第三方库的安装名
+    Args:
+        lib_name: [str]库名
+    Returns:
+        安装名
+    """
+    if lib_name != 'PyQt4':
+        return lib_name
+    if platform.architecture()[0].startswith('32'):
+        return 'PyQt4-4.11.4-cp27-cp27m-win32.whl'
+    return 'PyQt4-4.11.4-cp27-cp27m-win_amd64.whl'
