@@ -29,6 +29,8 @@ def exec_python_script(script_name, script_args, thread_name):
     full_path = script_name
     if not os.path.isabs(full_path):
         full_path = os.path.join(cwd, full_path)
+    else:
+        script_name = os.path.basename(script_name)
     if full_path == os.path.splitext(full_path)[0]:
         full_path = os.extsep.join((full_path, 'py'))
     sys_argv = [full_path]
